@@ -12,10 +12,10 @@ export const STATUS_META: Record<
   { color: string; label: string }
 > = {
   Preparing: { color: "#3B82F6", label: "Preparing" },
-  Writing: { color: "#3B82F6", label: "Writing" },
+  Writing: { color: "#7C3AED", label: "Writing" },
   "In Review": { color: "#D946EF", label: "In Review" },
   Submitted: { color: "#10B981", label: "Submitted" },
-  Won: { color: "#10B981", label: "Won" },
+  Won: { color: "#EC4899", label: "Won" },
   Lost: { color: "#da2f35", label: "Lost" },
   Archived: { color: "#6B7280", label: "Archived" },
 }
@@ -160,6 +160,27 @@ export function getProjectById(id: string): Project | undefined {
 /* Map a Kanban column to its canonical project status. */
 export function statusForColumn(column: KanbanColumnId): ProjectStatus {
   return KANBAN_COLUMNS.find((c) => c.id === column)?.status ?? "Preparing"
+}
+
+/* Distinct avatar colors so different owners/reviewers are visually
+   distinguishable. The same initials always resolve to the same color. */
+export const AVATAR_COLORS: { bg: string; fg: string }[] = [
+  { bg: "#7C3AED", fg: "#ffffff" }, // purple
+  { bg: "#10B981", fg: "#ffffff" }, // green
+  { bg: "#F59E0B", fg: "#1a1a1a" }, // amber/orange
+  { bg: "#3B82F6", fg: "#ffffff" }, // blue
+  { bg: "#EC4899", fg: "#ffffff" }, // pink
+  { bg: "#0891B2", fg: "#ffffff" }, // cyan
+  { bg: "#EAB308", fg: "#1a1a1a" }, // yellow
+  { bg: "#EF4444", fg: "#ffffff" }, // red
+]
+
+export function avatarColor(initials: string): { bg: string; fg: string } {
+  let hash = 0
+  for (let i = 0; i < initials.length; i++) {
+    hash = (hash * 31 + initials.charCodeAt(i)) >>> 0
+  }
+  return AVATAR_COLORS[hash % AVATAR_COLORS.length]
 }
 
 export const ANSWER_BANK: AnswerEntry[] = [

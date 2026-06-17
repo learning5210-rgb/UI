@@ -27,11 +27,31 @@ export function StatusDot({
     return <Circle style={style} strokeWidth={2.5} aria-hidden />
   if (status === "In Review")
     return <CircleDot style={style} strokeWidth={2.5} aria-hidden />
-  if (status === "Submitted")
+  if (status === "Submitted" || status === "Won")
     return (
-      <CheckCircle2 style={style} fill={color} stroke="#ffffff" aria-hidden />
+      <CheckCircle2
+        style={style}
+        fill={color}
+        stroke="#ffffff"
+        strokeWidth={2.5}
+        aria-hidden
+      />
     )
-  // Writing, Won, Lost, Archived — solid filled circle
+  // Writing — outlined circle with a half-filled interior (matches Kanban board)
+  if (status === "Writing")
+    return (
+      <span
+        className="relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2"
+        style={{ width: size, height: size, borderColor: color }}
+        aria-hidden
+      >
+        <span
+          className="absolute bottom-0 left-0 right-0 h-1/2"
+          style={{ backgroundColor: color }}
+        />
+      </span>
+    )
+  // Lost, Archived — solid filled circle
   return (
     <span
       className="inline-block shrink-0 rounded-full"

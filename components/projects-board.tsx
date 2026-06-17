@@ -7,6 +7,7 @@ import { useClickOutside } from "./ui-kit"
 import { cn } from "@/lib/utils"
 import {
   KANBAN_COLUMNS,
+  avatarColor,
   type KanbanProject,
   type KanbanColumnId,
 } from "@/lib/data"
@@ -76,14 +77,18 @@ function AvatarStack({
 }) {
   return (
     <span className="flex items-center -space-x-1.5">
-      {people.map((p, i) => (
-        <span
-          key={`${p}-${i}`}
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-primary text-[9px] font-semibold text-primary-foreground"
-        >
-          {p}
-        </span>
-      ))}
+      {people.map((p, i) => {
+        const c = avatarColor(p)
+        return (
+          <span
+            key={`${p}-${i}`}
+            className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-card text-[9px] font-semibold"
+            style={{ backgroundColor: c.bg, color: c.fg }}
+          >
+            {p}
+          </span>
+        )
+      })}
       {overflow ? (
         <span className="inline-flex h-6 items-center justify-center rounded-full border-2 border-card bg-muted px-1.5 text-[9px] font-semibold text-muted-foreground">
           +{overflow}
